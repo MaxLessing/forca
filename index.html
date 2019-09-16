@@ -1,719 +1,719 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <!-- Meta tags Obrigatórias -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-    <title>Forca</title>
-
-</head>
-<body style="background-color: #32a852">
-<div class="container-fluid mt-5">
-    <div class="row text-center">
-        <div class="col-sm-4">
-        </div>
-        <div class="col-sm-4">
-            <h1><span id="score-player-1">0</span> x <span id="score-player-2">0</span></h1>
-        </div>
-        <div class="col-sm-4">
-        </div>
-        <div class="col-sm-12" style="height: 30vh;">
-            <h1 id="score-message-center"></h1>
-            <h3 id="message-center"></h3>
-            <h5 id="submessage-center"></h5>
-        </div>
-        <div class="col-sm-12 p-5">
-            <h1 id="selected-word">_ _ _ _ _ _</h1>
-        </div>
-    </div>
-    <div class="row" style="height: 30vh;">
-        <div class="col-sm-4 text-center">
-            <div class="row">
-                <div class="col-sm-12" id="ball-palyer-1">
-                </div>
-                <div class="col-sm-12">
-                    <strong id="point-player-1"></strong>
-                </div>
-                <div class="col-sm-12">
-                    <strong id="name-player-1"></strong>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-4 text-center" id="letter-buttons">
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">A</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">B</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">C</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">D</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">E</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">F</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">G</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">H</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">I</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">J</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">K</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">L</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">M</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">N</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">O</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">P</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">Q</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">R</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">S</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">T</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">U</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">V</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">W</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">X</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">Y</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">Z</button>
-        </div>
-        <div class="col-sm-4 text-center" id="player-2">
-            <div class="row">
-                <div class="col-sm-12" id="ball-palyer-2">
-                </div>
-                <div class="col-sm-12">
-                    <strong id="point-player-2"></strong>
-                </div>
-                <div class="col-sm-12">
-                    <strong id="name-player-2"></strong>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- JavaScript (Opcional) -->
-<!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
-<script
-        src="https://code.jquery.com/jquery-3.4.1.js"
-        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
-
-<script src="bootbox.min.js"></script>
-
-<script>
-
-    var words = [
-        "futebol",
-        "bola",
-        "rede",
-        "trave"
-    ];
-
-    let searchParams = new URLSearchParams(window.location.search);
-
-    var GameType = {
-        SOLO: "0",
-        DUPLA: "1",
-        ONLINE: "2"
-    };
-
-    var Game = {
-        string: {
-            messageKick: "É a vez do {0} chutar!!!"
-        },
-        ball: '<img src="football-ball.png" style="width: 2vw" class="mr-1">',
-        scorePlayer1: null,
-        ballPlayer1: null,
-        namePlayer1: null,
-        pointPlayer1: null,
-        scorePlayer2: null,
-        ballPlayer2: null,
-        namePlayer2: null,
-        pointPlayer2: null,
-        messageCenter: null,
-        submessageCenter: null,
-        scoreMessageCenter: null,
-        selectedWordCenter: null,
-        letterbButton: null,
-        player2: null,
-        localPlayer: null,
-        dialogConvite: null,
-        dialogTentarNovamente: null,
-        state: {},
-        init: function () {
-
-            this.scorePlayer1 = $("#score-player-1");
-            this.ballPlayer1 = $("#ball-palyer-1");
-            this.namePlayer1 = $("#name-player-1");
-            this.pointPlayer1 = $("#point-player-1");
-            this.scorePlayer2 = $("#score-player-2");
-            this.ballPlayer2 = $("#ball-palyer-2");
-            this.namePlayer2 = $("#name-player-2");
-            this.pointPlayer2 = $("#point-player-2");
-
-            this.messageCenter = $("#message-center");
-            this.submessageCenter = $("#submessage-center");
-            this.selectedWordCenter = $("#selected-word");
-            this.scoreMessageCenter = $("#score-message-center");
-
-            this.player2 = $("#player-2");
-
-            if (searchParams.has("invite")) {
-			
-				Game.state.id = searchParams.get("invite");
-
-                Game.restoreState(function () {
-
-                    if (Game.state.init === "true") {
-                        Game.showDialogSemEspaco(function () {
-
-                            var url = window.location.origin + window.location.pathname;
-
-                            window.location.href = url;
-                        });
-                    } else {
-                        Game.showDialogNamePlayer("Jogador 2", function (name) {
-
-                            Game.getPlayer2().name = name;
-                            Game.getPlayer2().init = true;
-
-                            Game.saveState(function () {
-								
-								Game.localPlayer = Game.getPlayer2();
-							
-                                Game.setTimeRestoreState();
-                            });
-                        });
-                    }
-                });
-
-            } else {
-                $.get("init.php", function (d) {
-
-                    Game.state = d;
-
-                    Game.showDialogTipoJogo(function () {
-
-                            Game.state.gameType = GameType.SOLO;
-
-                            Game.showDialogNamePlayer("Jogador 1", function (name) {
-
-                                if (name) {
-
-                                    Game.getPlayer1().name = name;
-                                    Game.getPlayer1().init = true;
-
-                                    Game.modoJogoPalavras(function () {
-                                        Game.state.init = "true";
-                                    });
-
-                                } else {
-                                    Game.init();
-                                }
-
-                            });
-
-                        }, function () {
-
-                            Game.state.gameType = GameType.DUPLA;
-
-                            Game.showDialogNamePlayer("Jogador 1", function (name) {
-
-                                if (name) {
-
-                                    Game.getPlayer1().name = name;
-                                    Game.getPlayer1().init = true;
-
-                                    Game.showDialogNamePlayer("Jogador 2", function (name) {
-
-                                        if (name) {
-
-                                            Game.getPlayer2().name = name;
-                                            Game.getPlayer2().init = true;
-
-                                            Game.modoJogoPalavras(function () {
-                                                Game.state.init = "true";
-                                            });
-
-                                        } else {
-                                            Game.init();
-                                        }
-                                    });
-                                } else {
-                                    Game.init();
-                                }
-                            });
-                        }, function () {
-
-                            Game.state.gameType = GameType.ONLINE;
-
-                            Game.showDialogNamePlayer("Jogador 1", function (name) {
-
-                                if (name) {
-
-                                    Game.getPlayer1().name = name;
-                                    Game.getPlayer1().init = true;
-
-                                    Game.modoJogoPalavras(function () {
-                                        
-										Game.showDialogConvite();
-
-                                        Game.saveState(function () {
-											
-											Game.localPlayer = Game.getPlayer1();
-										
-                                            Game.setTimeRestoreState();
-                                        });
-                                    });
-
-                                } else {
-                                    Game.init();
-                                }
-                            });
-                        }
-                    );
-
-                }, 'json');
-            }
-        },
-        modoJogoPalavras: function (onModoJogoPalavras) {
-            this.showDialogTipoPalavra(function () {
-
-                Game.enableButtons();
-
-                Game.parseButtons();
-
-                Game.newWord(function () {
-
-                    Game.refreshSelectedWord();
-
-                    onModoJogoPalavras();
-                });
-            }, function () {
-                Game.showDialogCategoria(function (selectedCategory) {
-
-                    Game.state.selectedCategory = selectedCategory;
-
-                    Game.enableButtons();
-
-                    Game.parseButtons();
-
-                    Game.newWord(function () {
-
-                        Game.refreshSelectedWord();
-
-                        onModoJogoPalavras();
-                    });
-                })
-            });
-        },
-        showDialogTipoJogo: function (onClickSolo, onClickDupla, onClickDuplaOnline) {
-            var dialog = bootbox.dialog({
-                title: 'Selecione o modo de jogo',
-                centerVertical: true,
-                message: '<div class="row text-center"><div class="col-sm-12"><button type="button" class="btn btn-primary p-1 pr-5 pl-5 m-1" id="btn-solo">Solo</button></div><div class="col-sm-12"><button type="button" class="btn btn-primary p-1 pr-5 pl-5 m-1" id="btn-dupla">Dupla</button></div></div>',
-                closeButton: false
-            });
-			
-			//<div class="col-sm-12"><button type="button" class="btn btn-primary p-1 pr-5 pl-5 m-1" id="btn-dupla-online">Dupla Online</button></div>
-
-            dialog.on("shown.bs.modal", function () {
-                $("#btn-solo").click(function () {
-                    onClickSolo();
-
-                    dialog.modal('hide');
-                });
-                $("#btn-dupla").click(function () {
-                    onClickDuplaOnline();
-
-                    dialog.modal('hide');
-                });
-                $("#btn-dupla-online").click(function () {
-                    onClickDuplaOnline();
-
-                    dialog.modal('hide');
-                });
-            });
-        },
-        showDialogTipoPalavra: function (onClickOptionOne, onClickOptionTwo) {
-            var dialog = bootbox.dialog({
-                title: 'Selecione o modo de jogo com as palavras',
-                centerVertical: true,
-                message: '<div class="row text-center"><div class="col-sm-12"><button type="button" class="btn btn-primary p-1 pr-5 pl-5 m-1" id="btn-todas">Todas</button></div><div class="col-sm-12"><button type="button" class="btn btn-primary p-1 pr-5 pl-5 m-1" id="btn-categoria">Categoria</button></div></div>',
-                closeButton: false
-            });
-
-            dialog.on("shown.bs.modal", function () {
-                $("#btn-todas").click(function () {
-                    onClickOptionOne();
-
-                    dialog.modal('hide');
-                });
-                $("#btn-categoria").click(function () {
-                    onClickOptionTwo();
-
-                    dialog.modal('hide');
-                });
-            });
-        },
-        showDialogCategoria: function (onClickOptionOne) {
-
-            $.get("categories.php", function (d) {
-                bootbox.prompt({
-                    title: "Selecione a categoria!",
-                    inputType: 'select',
-                    centerVertical: true,
-                    inputOptions: d.categories,
-                    callback: function (result) {
-                        onClickOptionOne(result);
-                    }
-                });
-            }, 'json');
-
-
-        },
-        showDialogTentarNovamente: function (onClickOptionOne) {
-
-            if (Game.dialogTentarNovamente !== null)
-                return;
-
-            Game.dialogTentarNovamente = bootbox.dialog({
-                title: 'O jogo acabou!!!',
-                centerVertical: true,
-                message: '<div class="row text-center"><div class="col-sm-12"><button type="button" class="btn btn-primary p-1 pr-5 pl-5 m-1" id="btn-novamente">Tentar novamente</button></div></div>',
-                closeButton: false
-            });
-
-            Game.dialogTentarNovamente.on("shown.bs.modal", function () {
-                $("#btn-novamente").click(function () {
-                    onClickOptionOne();
-
-                    Game.dialogTentarNovamente.modal('hide');
-                });
-            });
-        },
-        showDialogNamePlayer: function (player, onClickOk) {
-
-            var locale = {
-                OK: 'Ok',
-                CONFIRM: 'Confirmar',
-                CANCEL: 'Voltar'
-            };
-
-            bootbox.addLocale('custom', locale);
-
-            bootbox.prompt({
-                title: "Digite o nome do " + player,
-                locale: 'custom',
-                centerVertical: true,
-                closeButton: false,
-                callback: function (result) {
-                    onClickOk(result);
-                }
-            });
-        },
-        refreshPlayers: function () {
-            if (this.state.gameType === GameType.SOLO) {
-                this.player2.hide();
-            } else {
-                this.player2.show();
-            }
-        },
-        refreshJogador: function () {
-
-            Game.messageCenter.text(Game.string.messageKick.replace("{0}", Game.getCurrentPlayer().name));
-
-            Game.ballPlayer1.html("");
-
-            for (let i = 0; i < Game.getPlayer1().lifes; i++)
-                Game.ballPlayer1.append(Game.ball);
-
-            Game.namePlayer1.text(Game.getPlayer1().name);
-            Game.pointPlayer1.text(Game.getPlayer1().point);
-            Game.scorePlayer1.text(Game.getPlayer1().score);
-
-            Game.ballPlayer2.html("");
-
-            for (let i = 0; i < Game.getPlayer2().lifes; i++)
-                Game.ballPlayer2.append(Game.ball);
-
-            Game.namePlayer2.text(Game.getPlayer2().name);
-            Game.pointPlayer2.text(Game.getPlayer2().point);
-            Game.scorePlayer2.text(Game.getPlayer2().score);
-        },
-        refreshSelectedWord: function () {
-
-            Game.refreshPlayers();
-
-            let letters = Game.state.selectedWord.split("");
-
-            let wordLetters = "";
-
-            let find = false;
-
-            let notFound = 0;
-
-            for (let i = 0; i < letters.length; i++) {
-
-                if (letters[i].toUpperCase() === Game.state.selectedLetter.toUpperCase() || Game.state.showingWord.toUpperCase().search(letters[i].toUpperCase()) >= 0) {
-                    wordLetters += letters[i];
-                } else {
-                    wordLetters += "_";
-                    notFound++;
-                }
-
-                wordLetters += " ";
-            }
-
-            let letterPointSum = 0;
-
-            for (let i = 0; i < letters.length; i++) {
-                if (letters[i].toUpperCase() === Game.state.selectedLetter.toUpperCase()) {
-                    find = true;
-                    letterPointSum += parseInt(Game.state.letterPoint);
-                }
-            }
-
-            Game.state.showingWord = wordLetters;
-
-            Game.selectedWordCenter.text(wordLetters);
-
-            if (!find && Game.state.selectedLetter !== "") {
-
-                Game.getCurrentPlayer().lifes = Game.getCurrentPlayer().lifes - 1;
-
-                Game.switchCurrentPlayer();
-
-            } else {
-                Game.getCurrentPlayer().point = parseInt(Game.getCurrentPlayer().point) + letterPointSum;
-            }
-
-            if (notFound <= 0) {
-
-                let subMessage = "O {0} acertou a palavra " + Game.state.selectedWord;
-
-                Game.getCurrentPlayer().point = parseInt(Game.getCurrentPlayer().point) + parseInt(Game.state.wordPoint);
-
-                Game.getCurrentPlayer().score = parseInt(Game.getCurrentPlayer().score) + 1;
-
-                subMessage = subMessage.replace("{0}", Game.getCurrentPlayer().name);
-
-                Game.state.selectedLetter = "";
-                Game.state.showingWord = "";
-
-                Game.state.subMessage = subMessage;
-
-                Game.state.scoreMessage = "Gol!!";
-
-                Game.newWord(function () {
-
-                    Game.enableButtons();
-					
-					Game.parseButtons();
-
-                    Game.refreshSelectedWord();
-
-                });
-            } else {
-			
-				if(Game.state.init === "true"){
-					Game.saveState(function () {
-
-						Game.refreshJogador();
-
-						Game.verificarFinalJogo();
-					});
-				}
-            }
-
-            Game.submessageCenter.text(Game.state.subMessage);
-            Game.scoreMessageCenter.text(Game.state.scoreMessage);
-        },
-        verificarFinalJogo: function () {
-            if (Game.state.gameType === GameType.SOLO) {
-                if (Game.getPlayer1().lifes <= 0) {
-                    Game.showDialogTentarNovamente(function () {
-                        Game.init();
-                    })
-                }
-            } else {
-                if (Game.getPlayer1().lifes <= 0 && Game.getPlayer2().lifes <= 0) {
-                    Game.showDialogTentarNovamente(function () {
-                        Game.init();
-                    })
-                }
-            }
-        },
-        newWord: function (onNewWord) {
-            $.get("words.php", {selected_category: Game.state.selectedCategory}, function (d) {
-
-                Game.state.selectedWord = d.word;
-
-                Game.state.showingWord = "";
-
-                onNewWord();
-            }, 'json');
-        },
-        enableButtons: function () {
-            for (let i = 0; i < this.state.letters.length; i++) {
-                this.state.letters[i].enable = "true";
-            }
-        },
-        parseButtons: function () {
-
-            var letterButtons = $("#letter-buttons");
-
-            letterButtons.html("");
-
-            for (let i = 0; i < this.state.letters.length; i++) {
-
-                let enabled = "";
-
-                if (this.state.letters[i].enable.toString() === "false") {
-                    enabled = 'disabled="disabled"';
-                }
-
-                letterButtons.append('<button index="' + i + '" type="button" class="btn btn-primary btn-sm mb-1 letter-button mr-1" ' + enabled + '>' + this.state.letters[i].letter + '</button>');
-            }
-
-            this.letterbButton = $(".letter-button");
-
-            this.letterbButton.click(function () {
-
-                if (Game.isTimeToPlayer()) {
-
-                    let $this = $(this);
-
-                    let index = $this.attr("index");
-
-                    Game.state.letters[index].enable = false;
-
-                    Game.parseButtons();
-
-                    Game.state.selectedLetter = $this.text();
-
-                    Game.state.subMessage = "";
-                    Game.state.scoreMessage = "";
-
-                    Game.refreshSelectedWord();
-                }
-            });
-        },
-        saveState: function (onSaveState) {
-            $.post("state.php", this.state, function (d) {
-				
-				Game.state = d;
-				
-                onSaveState();
-            }, 'json');
-        },
-        restoreState: function (onRestoreState) {
-            $.get("state.php", {id: Game.state.id},function (d) {
-
-                Game.state = d;
-
-                Game.refreshJogador();
-
-                Game.parseButtons();
-
-                Game.selectedWordCenter.text(Game.state.showingWord);
-
-                Game.submessageCenter.text(Game.state.subMessage);
-
-                if (typeof onRestoreState !== "undefined")
-                    onRestoreState();
-
-            }, 'json');
-        },
-        setTimeRestoreState: function () {
-			if(!Game.isTimeToPlayer() || Game.state.init === "false"){
-				Game.restoreState(function () {
-					if (Game.state.gameType === GameType.ONLINE) {
-
-						Game.verificarFinalJogo();
-
-						if (Game.getPlayer1().init === "true" && Game.getPlayer2().init === "true") {
-							if (Game.dialogConvite !== null) {
-								Game.dialogConvite.modal('hide');
-							}
-
-							Game.state.init = "true";
-
-							Game.saveState(function () {
-								Game.setTimeoutRestoreState();
-							});
-						} else {
-							Game.setTimeoutRestoreState();
-						}
-					}
-				});
-			} else {
-				Game.setTimeoutRestoreState();
-			}
-        },
-        setTimeoutRestoreState: function () {
-            setTimeout(function () {
-                Game.setTimeRestoreState();
-            }, 2000);
-        },
-        getPlayer1: function () {
-            return this.state.players[0];
-        },
-        getPlayer2: function () {
-            return this.state.players[1];
-        },
-        getCurrentPlayer: function () {
-            return this.state.players[this.state.playerTime];
-        },
-        switchCurrentPlayer: function () {
-            if (this.state.gameType !== GameType.SOLO) {
-                if (this.state.playerTime === "0") {
-                    this.state.playerTime = "1";
-                } else {
-                    this.state.playerTime = "0";
-                }
-            }
-        },
-        showDialogConvite: function () {
-
-            var url = window.location.href + "?invite=" + this.state.id;
-
-            this.dialogConvite = bootbox.dialog({
-                title: 'Envie o link para sua dupla',
-                centerVertical: true,
-                message: '<div class="row text-center"><div class="col-sm-12">' + url + '</div></div>',
-                closeButton: false
-            });
-        },
-        showDialogSemEspaco: function (onClickOptionOne) {
-
-            var dialog = bootbox.dialog({
-                title: 'Não há espaço para outros jogadores!!!',
-                centerVertical: true,
-                message: '<div class="row text-center"><div class="col-sm-12"><button type="button" class="btn btn-primary p-1 pr-5 pl-5 m-1" id="btn-novo-jogo">Novo Jogo</button></div></div>',
-                closeButton: false
-            });
-
-            dialog.on("shown.bs.modal", function () {
-                $("#btn-novo-jogo").click(function () {
-                    onClickOptionOne();
-
-                    dialog.modal('hide');
-                });
-            });
-        },
-        isTimeToPlayer() {
-            if (Game.localPlayer !== null && Game.localPlayer.id.toString() !== Game.getCurrentPlayer().id.toString()) {
-                return false;
-            }
-            return true;
-        }
-    };
-
-    Game.init();
-
-</script>
-</body>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Forca</title>
+
+</head>
+<body style="background-color: #32a852">
+<div class="container-fluid mt-5">
+    <div class="row text-center">
+        <div class="col-sm-4">
+        </div>
+        <div class="col-sm-4">
+            <h1><span id="score-player-1">0</span> x <span id="score-player-2">0</span></h1>
+        </div>
+        <div class="col-sm-4">
+        </div>
+        <div class="col-sm-12" style="height: 30vh;">
+            <h1 id="score-message-center"></h1>
+            <h3 id="message-center"></h3>
+            <h5 id="submessage-center"></h5>
+        </div>
+        <div class="col-sm-12 p-5">
+            <h1 id="selected-word">_ _ _ _ _ _</h1>
+        </div>
+    </div>
+    <div class="row" style="height: 30vh;">
+        <div class="col-sm-4 text-center">
+            <div class="row">
+                <div class="col-sm-12" id="ball-palyer-1">
+                </div>
+                <div class="col-sm-12">
+                    <strong id="point-player-1"></strong>
+                </div>
+                <div class="col-sm-12">
+                    <strong id="name-player-1"></strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 text-center" id="letter-buttons">
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">A</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">B</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">C</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">D</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">E</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">F</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">G</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">H</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">I</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">J</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">K</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">L</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">M</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">N</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">O</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">P</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">Q</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">R</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">S</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">T</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">U</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">V</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">W</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">X</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">Y</button>
+            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">Z</button>
+        </div>
+        <div class="col-sm-4 text-center" id="player-2">
+            <div class="row">
+                <div class="col-sm-12" id="ball-palyer-2">
+                </div>
+                <div class="col-sm-12">
+                    <strong id="point-player-2"></strong>
+                </div>
+                <div class="col-sm-12">
+                    <strong id="name-player-2"></strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript (Opcional) -->
+<!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+<script
+        src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+<script src="bootbox.min.js"></script>
+
+<script>
+
+    var words = [
+        "futebol",
+        "bola",
+        "rede",
+        "trave"
+    ];
+
+    let searchParams = new URLSearchParams(window.location.search);
+
+    var GameType = {
+        SOLO: "0",
+        DUPLA: "1",
+        ONLINE: "2"
+    };
+
+    var Game = {
+        string: {
+            messageKick: "É a vez do {0} chutar!!!"
+        },
+        ball: '<img src="football-ball.png" style="width: 2vw" class="mr-1">',
+        scorePlayer1: null,
+        ballPlayer1: null,
+        namePlayer1: null,
+        pointPlayer1: null,
+        scorePlayer2: null,
+        ballPlayer2: null,
+        namePlayer2: null,
+        pointPlayer2: null,
+        messageCenter: null,
+        submessageCenter: null,
+        scoreMessageCenter: null,
+        selectedWordCenter: null,
+        letterbButton: null,
+        player2: null,
+        localPlayer: null,
+        dialogConvite: null,
+        dialogTentarNovamente: null,
+        state: {},
+        init: function () {
+
+            this.scorePlayer1 = $("#score-player-1");
+            this.ballPlayer1 = $("#ball-palyer-1");
+            this.namePlayer1 = $("#name-player-1");
+            this.pointPlayer1 = $("#point-player-1");
+            this.scorePlayer2 = $("#score-player-2");
+            this.ballPlayer2 = $("#ball-palyer-2");
+            this.namePlayer2 = $("#name-player-2");
+            this.pointPlayer2 = $("#point-player-2");
+
+            this.messageCenter = $("#message-center");
+            this.submessageCenter = $("#submessage-center");
+            this.selectedWordCenter = $("#selected-word");
+            this.scoreMessageCenter = $("#score-message-center");
+
+            this.player2 = $("#player-2");
+
+            if (searchParams.has("invite")) {
+			
+				Game.state.id = searchParams.get("invite");
+
+                Game.restoreState(function () {
+
+                    if (Game.state.init === "true") {
+                        Game.showDialogSemEspaco(function () {
+
+                            var url = window.location.origin + window.location.pathname;
+
+                            window.location.href = url;
+                        });
+                    } else {
+                        Game.showDialogNamePlayer("Jogador 2", function (name) {
+
+                            Game.getPlayer2().name = name;
+                            Game.getPlayer2().init = true;
+
+                            Game.saveState(function () {
+								
+								Game.localPlayer = Game.getPlayer2();
+							
+                                Game.setTimeRestoreState();
+                            });
+                        });
+                    }
+                });
+
+            } else {
+                $.get("init.php", function (d) {
+
+                    Game.state = d;
+
+                    Game.showDialogTipoJogo(function () {
+
+                            Game.state.gameType = GameType.SOLO;
+
+                            Game.showDialogNamePlayer("Jogador 1", function (name) {
+
+                                if (name) {
+
+                                    Game.getPlayer1().name = name;
+                                    Game.getPlayer1().init = true;
+
+                                    Game.modoJogoPalavras(function () {
+                                        Game.state.init = "true";
+                                    });
+
+                                } else {
+                                    Game.init();
+                                }
+
+                            });
+
+                        }, function () {
+
+                            Game.state.gameType = GameType.DUPLA;
+
+                            Game.showDialogNamePlayer("Jogador 1", function (name) {
+
+                                if (name) {
+
+                                    Game.getPlayer1().name = name;
+                                    Game.getPlayer1().init = true;
+
+                                    Game.showDialogNamePlayer("Jogador 2", function (name) {
+
+                                        if (name) {
+
+                                            Game.getPlayer2().name = name;
+                                            Game.getPlayer2().init = true;
+
+                                            Game.modoJogoPalavras(function () {
+                                                Game.state.init = "true";
+                                            });
+
+                                        } else {
+                                            Game.init();
+                                        }
+                                    });
+                                } else {
+                                    Game.init();
+                                }
+                            });
+                        }, function () {
+
+                            Game.state.gameType = GameType.ONLINE;
+
+                            Game.showDialogNamePlayer("Jogador 1", function (name) {
+
+                                if (name) {
+
+                                    Game.getPlayer1().name = name;
+                                    Game.getPlayer1().init = true;
+
+                                    Game.modoJogoPalavras(function () {
+                                        
+										Game.showDialogConvite();
+
+                                        Game.saveState(function () {
+											
+											Game.localPlayer = Game.getPlayer1();
+										
+                                            Game.setTimeRestoreState();
+                                        });
+                                    });
+
+                                } else {
+                                    Game.init();
+                                }
+                            });
+                        }
+                    );
+
+                }, 'json');
+            }
+        },
+        modoJogoPalavras: function (onModoJogoPalavras) {
+            this.showDialogTipoPalavra(function () {
+
+                Game.enableButtons();
+
+                Game.parseButtons();
+
+                Game.newWord(function () {
+
+                    Game.refreshSelectedWord();
+
+                    onModoJogoPalavras();
+                });
+            }, function () {
+                Game.showDialogCategoria(function (selectedCategory) {
+
+                    Game.state.selectedCategory = selectedCategory;
+
+                    Game.enableButtons();
+
+                    Game.parseButtons();
+
+                    Game.newWord(function () {
+
+                        Game.refreshSelectedWord();
+
+                        onModoJogoPalavras();
+                    });
+                })
+            });
+        },
+        showDialogTipoJogo: function (onClickSolo, onClickDupla, onClickDuplaOnline) {
+            var dialog = bootbox.dialog({
+                title: 'Selecione o modo de jogo',
+                centerVertical: true,
+                message: '<div class="row text-center"><div class="col-sm-12"><button type="button" class="btn btn-primary p-1 pr-5 pl-5 m-1" id="btn-solo">Solo</button></div><div class="col-sm-12"><button type="button" class="btn btn-primary p-1 pr-5 pl-5 m-1" id="btn-dupla">Dupla</button></div></div>',
+                closeButton: false
+            });
+			
+			//<div class="col-sm-12"><button type="button" class="btn btn-primary p-1 pr-5 pl-5 m-1" id="btn-dupla-online">Dupla Online</button></div>
+
+            dialog.on("shown.bs.modal", function () {
+                $("#btn-solo").click(function () {
+                    onClickSolo();
+
+                    dialog.modal('hide');
+                });
+                $("#btn-dupla").click(function () {
+                    onClickDuplaOnline();
+
+                    dialog.modal('hide');
+                });
+                $("#btn-dupla-online").click(function () {
+                    onClickDuplaOnline();
+
+                    dialog.modal('hide');
+                });
+            });
+        },
+        showDialogTipoPalavra: function (onClickOptionOne, onClickOptionTwo) {
+            var dialog = bootbox.dialog({
+                title: 'Selecione o modo de jogo com as palavras',
+                centerVertical: true,
+                message: '<div class="row text-center"><div class="col-sm-12"><button type="button" class="btn btn-primary p-1 pr-5 pl-5 m-1" id="btn-todas">Todas</button></div><div class="col-sm-12"><button type="button" class="btn btn-primary p-1 pr-5 pl-5 m-1" id="btn-categoria">Categoria</button></div></div>',
+                closeButton: false
+            });
+
+            dialog.on("shown.bs.modal", function () {
+                $("#btn-todas").click(function () {
+                    onClickOptionOne();
+
+                    dialog.modal('hide');
+                });
+                $("#btn-categoria").click(function () {
+                    onClickOptionTwo();
+
+                    dialog.modal('hide');
+                });
+            });
+        },
+        showDialogCategoria: function (onClickOptionOne) {
+
+            $.get("categories.php", function (d) {
+                bootbox.prompt({
+                    title: "Selecione a categoria!",
+                    inputType: 'select',
+                    centerVertical: true,
+                    inputOptions: d.categories,
+                    callback: function (result) {
+                        onClickOptionOne(result);
+                    }
+                });
+            }, 'json');
+
+
+        },
+        showDialogTentarNovamente: function (onClickOptionOne) {
+
+            if (Game.dialogTentarNovamente !== null)
+                return;
+
+            Game.dialogTentarNovamente = bootbox.dialog({
+                title: 'O jogo acabou!!!',
+                centerVertical: true,
+                message: '<div class="row text-center"><div class="col-sm-12"><button type="button" class="btn btn-primary p-1 pr-5 pl-5 m-1" id="btn-novamente">Tentar novamente</button></div></div>',
+                closeButton: false
+            });
+
+            Game.dialogTentarNovamente.on("shown.bs.modal", function () {
+                $("#btn-novamente").click(function () {
+                    onClickOptionOne();
+
+                    Game.dialogTentarNovamente.modal('hide');
+                });
+            });
+        },
+        showDialogNamePlayer: function (player, onClickOk) {
+
+            var locale = {
+                OK: 'Ok',
+                CONFIRM: 'Confirmar',
+                CANCEL: 'Voltar'
+            };
+
+            bootbox.addLocale('custom', locale);
+
+            bootbox.prompt({
+                title: "Digite o nome do " + player,
+                locale: 'custom',
+                centerVertical: true,
+                closeButton: false,
+                callback: function (result) {
+                    onClickOk(result);
+                }
+            });
+        },
+        refreshPlayers: function () {
+            if (this.state.gameType === GameType.SOLO) {
+                this.player2.hide();
+            } else {
+                this.player2.show();
+            }
+        },
+        refreshJogador: function () {
+
+            Game.messageCenter.text(Game.string.messageKick.replace("{0}", Game.getCurrentPlayer().name));
+
+            Game.ballPlayer1.html("");
+
+            for (let i = 0; i < Game.getPlayer1().lifes; i++)
+                Game.ballPlayer1.append(Game.ball);
+
+            Game.namePlayer1.text(Game.getPlayer1().name);
+            Game.pointPlayer1.text(Game.getPlayer1().point);
+            Game.scorePlayer1.text(Game.getPlayer1().score);
+
+            Game.ballPlayer2.html("");
+
+            for (let i = 0; i < Game.getPlayer2().lifes; i++)
+                Game.ballPlayer2.append(Game.ball);
+
+            Game.namePlayer2.text(Game.getPlayer2().name);
+            Game.pointPlayer2.text(Game.getPlayer2().point);
+            Game.scorePlayer2.text(Game.getPlayer2().score);
+        },
+        refreshSelectedWord: function () {
+
+            Game.refreshPlayers();
+
+            let letters = Game.state.selectedWord.split("");
+
+            let wordLetters = "";
+
+            let find = false;
+
+            let notFound = 0;
+
+            for (let i = 0; i < letters.length; i++) {
+
+                if (letters[i].toUpperCase() === Game.state.selectedLetter.toUpperCase() || Game.state.showingWord.toUpperCase().search(letters[i].toUpperCase()) >= 0) {
+                    wordLetters += letters[i];
+                } else {
+                    wordLetters += "_";
+                    notFound++;
+                }
+
+                wordLetters += " ";
+            }
+
+            let letterPointSum = 0;
+
+            for (let i = 0; i < letters.length; i++) {
+                if (letters[i].toUpperCase() === Game.state.selectedLetter.toUpperCase()) {
+                    find = true;
+                    letterPointSum += parseInt(Game.state.letterPoint);
+                }
+            }
+
+            Game.state.showingWord = wordLetters;
+
+            Game.selectedWordCenter.text(wordLetters);
+
+            if (!find && Game.state.selectedLetter !== "") {
+
+                Game.getCurrentPlayer().lifes = Game.getCurrentPlayer().lifes - 1;
+
+                Game.switchCurrentPlayer();
+
+            } else {
+                Game.getCurrentPlayer().point = parseInt(Game.getCurrentPlayer().point) + letterPointSum;
+            }
+
+            if (notFound <= 0) {
+
+                let subMessage = "O {0} acertou a palavra " + Game.state.selectedWord;
+
+                Game.getCurrentPlayer().point = parseInt(Game.getCurrentPlayer().point) + parseInt(Game.state.wordPoint);
+
+                Game.getCurrentPlayer().score = parseInt(Game.getCurrentPlayer().score) + 1;
+
+                subMessage = subMessage.replace("{0}", Game.getCurrentPlayer().name);
+
+                Game.state.selectedLetter = "";
+                Game.state.showingWord = "";
+
+                Game.state.subMessage = subMessage;
+
+                Game.state.scoreMessage = "Gol!!";
+
+                Game.newWord(function () {
+
+                    Game.enableButtons();
+					
+					Game.parseButtons();
+
+                    Game.refreshSelectedWord();
+
+                });
+            } else {
+			
+				if(Game.state.init === "true"){
+					Game.saveState(function () {
+
+						Game.refreshJogador();
+
+						Game.verificarFinalJogo();
+					});
+				}
+            }
+
+            Game.submessageCenter.text(Game.state.subMessage);
+            Game.scoreMessageCenter.text(Game.state.scoreMessage);
+        },
+        verificarFinalJogo: function () {
+            if (Game.state.gameType === GameType.SOLO) {
+                if (Game.getPlayer1().lifes <= 0) {
+                    Game.showDialogTentarNovamente(function () {
+                        Game.init();
+                    })
+                }
+            } else {
+                if (Game.getPlayer1().lifes <= 0 && Game.getPlayer2().lifes <= 0) {
+                    Game.showDialogTentarNovamente(function () {
+                        Game.init();
+                    })
+                }
+            }
+        },
+        newWord: function (onNewWord) {
+            $.get("words.php", {selected_category: Game.state.selectedCategory}, function (d) {
+
+                Game.state.selectedWord = d.word;
+
+                Game.state.showingWord = "";
+
+                onNewWord();
+            }, 'json');
+        },
+        enableButtons: function () {
+            for (let i = 0; i < this.state.letters.length; i++) {
+                this.state.letters[i].enable = "true";
+            }
+        },
+        parseButtons: function () {
+
+            var letterButtons = $("#letter-buttons");
+
+            letterButtons.html("");
+
+            for (let i = 0; i < this.state.letters.length; i++) {
+
+                let enabled = "";
+
+                if (this.state.letters[i].enable.toString() === "false") {
+                    enabled = 'disabled="disabled"';
+                }
+
+                letterButtons.append('<button index="' + i + '" type="button" class="btn btn-primary btn-sm mb-1 letter-button mr-1" ' + enabled + '>' + this.state.letters[i].letter + '</button>');
+            }
+
+            this.letterbButton = $(".letter-button");
+
+            this.letterbButton.click(function () {
+
+                if (Game.isTimeToPlayer()) {
+
+                    let $this = $(this);
+
+                    let index = $this.attr("index");
+
+                    Game.state.letters[index].enable = false;
+
+                    Game.parseButtons();
+
+                    Game.state.selectedLetter = $this.text();
+
+                    Game.state.subMessage = "";
+                    Game.state.scoreMessage = "";
+
+                    Game.refreshSelectedWord();
+                }
+            });
+        },
+        saveState: function (onSaveState) {
+            $.post("state.php", this.state, function (d) {
+				
+				Game.state = d;
+				
+                onSaveState();
+            }, 'json');
+        },
+        restoreState: function (onRestoreState) {
+            $.get("state.php", {id: Game.state.id},function (d) {
+
+                Game.state = d;
+
+                Game.refreshJogador();
+
+                Game.parseButtons();
+
+                Game.selectedWordCenter.text(Game.state.showingWord);
+
+                Game.submessageCenter.text(Game.state.subMessage);
+
+                if (typeof onRestoreState !== "undefined")
+                    onRestoreState();
+
+            }, 'json');
+        },
+        setTimeRestoreState: function () {
+			if(!Game.isTimeToPlayer() || Game.state.init === "false"){
+				Game.restoreState(function () {
+					if (Game.state.gameType === GameType.ONLINE) {
+
+						Game.verificarFinalJogo();
+
+						if (Game.getPlayer1().init === "true" && Game.getPlayer2().init === "true") {
+							if (Game.dialogConvite !== null) {
+								Game.dialogConvite.modal('hide');
+							}
+
+							Game.state.init = "true";
+
+							Game.saveState(function () {
+								Game.setTimeoutRestoreState();
+							});
+						} else {
+							Game.setTimeoutRestoreState();
+						}
+					}
+				});
+			} else {
+				Game.setTimeoutRestoreState();
+			}
+        },
+        setTimeoutRestoreState: function () {
+            setTimeout(function () {
+                Game.setTimeRestoreState();
+            }, 2000);
+        },
+        getPlayer1: function () {
+            return this.state.players[0];
+        },
+        getPlayer2: function () {
+            return this.state.players[1];
+        },
+        getCurrentPlayer: function () {
+            return this.state.players[this.state.playerTime];
+        },
+        switchCurrentPlayer: function () {
+            if (this.state.gameType !== GameType.SOLO) {
+                if (this.state.playerTime === "0") {
+                    this.state.playerTime = "1";
+                } else {
+                    this.state.playerTime = "0";
+                }
+            }
+        },
+        showDialogConvite: function () {
+
+            var url = window.location.href + "?invite=" + this.state.id;
+
+            this.dialogConvite = bootbox.dialog({
+                title: 'Envie o link para sua dupla',
+                centerVertical: true,
+                message: '<div class="row text-center"><div class="col-sm-12">' + url + '</div></div>',
+                closeButton: false
+            });
+        },
+        showDialogSemEspaco: function (onClickOptionOne) {
+
+            var dialog = bootbox.dialog({
+                title: 'Não há espaço para outros jogadores!!!',
+                centerVertical: true,
+                message: '<div class="row text-center"><div class="col-sm-12"><button type="button" class="btn btn-primary p-1 pr-5 pl-5 m-1" id="btn-novo-jogo">Novo Jogo</button></div></div>',
+                closeButton: false
+            });
+
+            dialog.on("shown.bs.modal", function () {
+                $("#btn-novo-jogo").click(function () {
+                    onClickOptionOne();
+
+                    dialog.modal('hide');
+                });
+            });
+        },
+        isTimeToPlayer() {
+            if (Game.localPlayer !== null && Game.localPlayer.id.toString() !== Game.getCurrentPlayer().id.toString()) {
+                return false;
+            }
+            return true;
+        }
+    };
+
+    Game.init();
+
+</script>
+</body>
 </html>
