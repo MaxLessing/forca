@@ -45,32 +45,7 @@
             </div>
         </div>
         <div class="col-sm-4 text-center" id="letter-buttons">
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">A</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">B</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">C</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">D</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">E</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">F</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">G</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">H</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">I</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">J</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">K</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">L</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">M</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">N</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">O</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">P</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">Q</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">R</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">S</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">T</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">U</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">V</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">W</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">X</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">Y</button>
-            <button type="button" class="btn btn-primary btn-sm mb-1 letter-button">Z</button>
+            
         </div>
         <div class="col-sm-4 text-center" id="player-2">
             <div class="row">
@@ -117,7 +92,7 @@
         SOLO: "0",
         DUPLA: "1",
         ONLINE: "2"
-    };
+    };		console.log("version 2");
 
     var Game = {
         string: {
@@ -140,7 +115,7 @@
         player2: null,
         localPlayer: null,
         dialogConvite: null,
-        dialogTentarNovamente: null,
+        dialogTentarNovamente: null,				dialogCarregando: null,
         state: {},
         init: function () {
 
@@ -189,9 +164,9 @@
                     }
                 });
 
-            } else {
+            } else {							Game.showDialogCarregando();
                 $.get("init.php", function (d) {
-
+					Game.dismissDialogCarregando();
                     Game.state = d;
 
                     Game.showDialogTipoJogo(function () {
@@ -280,16 +255,10 @@
         },
         modoJogoPalavras: function (onModoJogoPalavras) {
             this.showDialogTipoPalavra(function () {
-
-                Game.enableButtons();
-
+                Game.enableButtons();				
                 Game.parseButtons();
-
                 Game.newWord(function () {
-
-                    Game.refreshSelectedWord();
-
-                    onModoJogoPalavras();
+                    Game.refreshSelectedWord();					onModoJogoPalavras();
                 });
             }, function () {
                 Game.showDialogCategoria(function (selectedCategory) {
@@ -300,11 +269,8 @@
 
                     Game.parseButtons();
 
-                    Game.newWord(function () {
-
-                        Game.refreshSelectedWord();
-
-                        onModoJogoPalavras();
+                    Game.newWord(function () {						
+                        Game.refreshSelectedWord();												onModoJogoPalavras();
                     });
                 })
             });
@@ -359,8 +325,8 @@
             });
         },
         showDialogCategoria: function (onClickOptionOne) {
-
-            $.get("categories.php", function (d) {
+			Game.showDialogCarregando();
+            $.get("categories.php", function (d) {							Game.dismissDialogCarregando();
                 bootbox.prompt({
                     title: "Selecione a categoria!",
                     inputType: 'select',
@@ -393,7 +359,7 @@
                     Game.dialogTentarNovamente.modal('hide');
                 });
             });
-        },
+        },				showDialogCarregando: function () {							/*if(Game.dialogCarregando === null) {							Game.dialogCarregando = bootbox.dialog({					centerVertical: true,										backdrop: "static",					message: '<div class="row text-center"><div class="col-sm-12">Carregando...</div></div>',					closeButton: false				});								Game.dialogCarregando.init(function() {					Game.dialogCarregando.addClass("dialogCarregando");				});			} else {				Game.dialogCarregando.modal('show');			}*/        },				dismissDialogCarregando: function () {					/*setTimeout(function(){ 				$(".dialogCarregando").modal('hide');			}, 250);*/        },
         showDialogNamePlayer: function (player, onClickOk) {
 
             var locale = {
@@ -443,18 +409,12 @@
             Game.pointPlayer2.text(Game.getPlayer2().point);
             Game.scorePlayer2.text(Game.getPlayer2().score);
         },
-        refreshSelectedWord: function () {
-
+        refreshSelectedWord: function (change) {		
             Game.refreshPlayers();
-
             let letters = Game.state.selectedWord.split("");
-
             let wordLetters = "";
-
-            let find = false;
-
-            let notFound = 0;
-
+            let find = false;			
+            let notFound = 0;			
             for (let i = 0; i < letters.length; i++) {
 
                 if (letters[i].toUpperCase() === Game.state.selectedLetter.toUpperCase() || Game.state.showingWord.toUpperCase().search(letters[i].toUpperCase()) >= 0) {
@@ -466,68 +426,39 @@
 
                 wordLetters += " ";
             }
-
-            let letterPointSum = 0;
-
-            for (let i = 0; i < letters.length; i++) {
+			for (let i = 0; i < letters.length; i++) {
                 if (letters[i].toUpperCase() === Game.state.selectedLetter.toUpperCase()) {
                     find = true;
-                    letterPointSum += parseInt(Game.state.letterPoint);
+                    Game.getCurrentPlayer().letterPointSum = parseInt(Game.state.letterPoint) + parseInt(Game.getCurrentPlayer().letterPointSum);
                 }
             }
-
             Game.state.showingWord = wordLetters;
-
             Game.selectedWordCenter.text(wordLetters);
-
-            if (!find && Game.state.selectedLetter !== "") {
-
-                Game.getCurrentPlayer().lifes = Game.getCurrentPlayer().lifes - 1;
-
-                Game.switchCurrentPlayer();
-
-            } else {
-                Game.getCurrentPlayer().point = parseInt(Game.getCurrentPlayer().point) + letterPointSum;
+            if (!find && Game.state.selectedLetter !== "") {							Game.getCurrentPlayer().lifes = Game.getCurrentPlayer().lifes - 1;
+                Game.switchCurrentPlayer();
             }
-
             if (notFound <= 0) {
-
-                let subMessage = "O {0} acertou a palavra " + Game.state.selectedWord;
-
-                Game.getCurrentPlayer().point = parseInt(Game.getCurrentPlayer().point) + parseInt(Game.state.wordPoint);
-
+                let subMessage = "O {0} acertou a palavra " + Game.state.selectedWord;								Game.getCurrentPlayer().letterPointSum = "0";
+                Game.getCurrentPlayer().point = parseInt(Game.getCurrentPlayer().point) + parseInt(Game.state.wordPoint);				
                 Game.getCurrentPlayer().score = parseInt(Game.getCurrentPlayer().score) + 1;
-
-                subMessage = subMessage.replace("{0}", Game.getCurrentPlayer().name);
-
+                subMessage = subMessage.replace("{0}", Game.getCurrentPlayer().name);				
                 Game.state.selectedLetter = "";
                 Game.state.showingWord = "";
-
                 Game.state.subMessage = subMessage;
-
-                Game.state.scoreMessage = "Gol!!";
-
+                Game.state.scoreMessage = "Gol!!";								Game.getPlayer1().point = parseInt(Game.getPlayer1().point) + parseInt(Game.getPlayer1().letterPointSum);								Game.getPlayer2().point = parseInt(Game.getPlayer2().point) + parseInt(Game.getPlayer2().letterPointSum);
                 Game.newWord(function () {
-
                     Game.enableButtons();
-					
-					Game.parseButtons();
-
-                    Game.refreshSelectedWord();
-
+					Game.parseButtons();					
+                    Game.refreshSelectedWord(true);
                 });
             } else {
-			
-				if(Game.state.init === "true"){
+				if(Game.state.init === "true" && change){
 					Game.saveState(function () {
-
 						Game.refreshJogador();
-
 						Game.verificarFinalJogo();
 					});
 				}
-            }
-
+            }						Game.setTimeoutRestoreState();			
             Game.submessageCenter.text(Game.state.subMessage);
             Game.scoreMessageCenter.text(Game.state.scoreMessage);
         },
@@ -546,13 +477,11 @@
                 }
             }
         },
-        newWord: function (onNewWord) {
+        newWord: function (onNewWord) {					Game.showDialogCarregando();
             $.get("words.php", {selected_category: Game.state.selectedCategory}, function (d) {
-
+				Game.dismissDialogCarregando();
                 Game.state.selectedWord = d.word;
-
                 Game.state.showingWord = "";
-
                 onNewWord();
             }, 'json');
         },
@@ -597,66 +526,35 @@
                     Game.state.subMessage = "";
                     Game.state.scoreMessage = "";
 
-                    Game.refreshSelectedWord();
+                    Game.refreshSelectedWord(true);
                 }
             });
         },
-        saveState: function (onSaveState) {
+        saveState: function (onSaveState) {					Game.showDialogCarregando();
             $.post("state.php", this.state, function (d) {
-				
-				Game.state = d;
-				
+				Game.dismissDialogCarregando();
+				Game.state = d;				
                 onSaveState();
             }, 'json');
         },
-        restoreState: function (onRestoreState) {
+        restoreState: function (onRestoreState) {					Game.showDialogCarregando();
             $.get("state.php", {id: Game.state.id},function (d) {
-
+				Game.dismissDialogCarregando();
                 Game.state = d;
-
                 Game.refreshJogador();
-
                 Game.parseButtons();
-
                 Game.selectedWordCenter.text(Game.state.showingWord);
-
                 Game.submessageCenter.text(Game.state.subMessage);
-
-                if (typeof onRestoreState !== "undefined")
-                    onRestoreState();
+                if (typeof onRestoreState !== "undefined")					onRestoreState();
 
             }, 'json');
         },
-        setTimeRestoreState: function () {
-			if(!Game.isTimeToPlayer() || Game.state.init === "false"){
-				Game.restoreState(function () {
-					if (Game.state.gameType === GameType.ONLINE) {
-
-						Game.verificarFinalJogo();
-
-						if (Game.getPlayer1().init === "true" && Game.getPlayer2().init === "true") {
-							if (Game.dialogConvite !== null) {
-								Game.dialogConvite.modal('hide');
-							}
-
-							Game.state.init = "true";
-
-							Game.saveState(function () {
-								Game.setTimeoutRestoreState();
-							});
-						} else {
-							Game.setTimeoutRestoreState();
-						}
-					}
-				});
-			} else {
-				Game.setTimeoutRestoreState();
-			}
+        setTimeRestoreState: function () {					if(Game.state.init === "false") {				Game.restoreState(function () {					if (Game.state.gameType === GameType.ONLINE) {						Game.verificarFinalJogo();						if (Game.getPlayer1().init === "true" && Game.getPlayer2().init === "true") {							if (Game.dialogConvite !== null) {								Game.dialogConvite.modal('hide');							}															Game.state.init = "true";							Game.saveState(function () {								Game.setTimeoutRestoreState();							});						} else {							Game.setTimeoutRestoreState();						}					}				});				return;			}						if(Game.isTimeToPlayer() !== true){				Game.restoreState(function () {					Game.setTimeoutRestoreState(); 				});			}
         },
         setTimeoutRestoreState: function () {
             setTimeout(function () {
                 Game.setTimeRestoreState();
-            }, 2000);
+            }, 0);
         },
         getPlayer1: function () {
             return this.state.players[0];
@@ -674,7 +572,7 @@
                 } else {
                     this.state.playerTime = "0";
                 }
-            }
+            }						Game.getCurrentPlayer().letterPointSum = "0";
         },
         showDialogConvite: function () {
 

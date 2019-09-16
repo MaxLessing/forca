@@ -27,7 +27,7 @@ echo json_encode([
             "lifes" => 5,
             "point" => 0,
             "init" => false,
-            "score" => 0
+            "score" => 0,						"letterPointSum" => 0,
         ],
         [
             "id" => null,
@@ -35,7 +35,7 @@ echo json_encode([
             "lifes" => 5,
             "point" => 0,
             "init" => false,
-            "score" => 0
+            "score" => 0,						"letterPointSum" => 0,
         ],
     ],
     "playerTime" => "0",
